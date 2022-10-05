@@ -93,3 +93,4 @@ Muy facil! Una vez copies el archivo en el directorio con tus programas simpleme
 Cosas que quedan por hacer
 - [ ] Tener flags para que el programa sea silencioso
 - [ ] Tal vez le vamos a tener que pasar argumentos a los archivos, se puede usar una flag o chequer si $2,$3, etc son usados y pasarselo al programa assembly
+- [ ] "Chupar" la advertencia del gets y que el resto de la salida del gcc vaya a pantalla

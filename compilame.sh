@@ -37,3 +37,5 @@ sinExtension=${1%.*} #Creo una variable del archivo a compilar sin la extension 
 echo "Compilo de codigo objeto a binario"
 echo ""
 gcc ${sinExtension}.o -o ${sinExtension}.out -no-pie
+
+./${sinExtension}.out #Esta linea ejecuta el binario
