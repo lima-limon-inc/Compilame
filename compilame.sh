@@ -36,6 +36,6 @@ sinExtension=${1%.*} #Creo una variable del archivo a compilar sin la extension 
 
 echo "Compilo de codigo objeto a binario"
 echo ""
-gcc ${sinExtension}.o -o ${sinExtension}.out -no-pie
+outputCompilado=$(gcc ${sinExtension}.o -o ${sinExtension}.out -no-pie 2>&1) #Mando los errores del gcc al standard output asi los atrapada la variable outputCompilado
 
 ./${sinExtension}.out #Esta linea ejecuta el binario
