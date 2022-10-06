@@ -1,5 +1,5 @@
 #!/bin/sh
-#Compilame version 2.0
+#Compilame version 2.1
 
 if [ -z "$1" ]
 then
@@ -30,9 +30,9 @@ fi
 
 echo "Compilo el archivo asembly a objeto"
 echo ""
-nasm $1 -f elf64 #Comando de compilacion de assembly a codigo objeto via nasm
+nasm "${1}" -f elf64 #Comando de compilacion de assembly a codigo objeto via nasm
 
-sinExtension=${1%.*} #Creo una variable del archivo a compilar sin la extension para facilitar los comandos que le siguen
+sinExtension="${1%.*}" #Creo una variable del archivo a compilar sin la extension para facilitar los comandos que le siguen
 
 echo "Compilo de codigo objeto a binario"
 echo ""
@@ -40,7 +40,7 @@ echo ""
 # Lo que tiene de malo este metodo es que solo funciona con un error. Se podria expandir para mucho errores "ignorables"
 errorGets="the \`gets' function is dangerous and should not be used."
 
-outputCompilado=$(gcc ${sinExtension}.o -o ${sinExtension}.out  2>&1 -no-pie)  #Mando los errores del gcc al standard output asi los atrapada la variable outputCompilado.
+outputCompilado=$(gcc "${sinExtension}".o -o "${sinExtension}".out  2>&1 -no-pie)  #Mando los errores del gcc al standard output asi los atrapada la variable outputCompilado.
 
 
 # Si alguien sabe una manera mas elegante de hacer esto, esta mas que bienvenido
@@ -49,4 +49,4 @@ outputParseado=$(echo -e "$outputCompilado" | grep -v "$errorGetsOutput") #Esta 
 
 echo -e "$outputParseado" #Esta linea muestra todos los otros errores que no parseamos antes (llamese, errores no relacionados al gets)
 
-./${sinExtension}.out #Esta linea ejecuta el binario
+./"${sinExtension}".out #Esta linea ejecuta el binario
