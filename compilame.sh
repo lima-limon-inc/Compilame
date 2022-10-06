@@ -36,6 +36,8 @@ sinExtension=${1%.*} #Creo una variable del archivo a compilar sin la extension 
 
 echo "Compilo de codigo objeto a binario"
 echo ""
-outputCompilado=$(gcc ${sinExtension}.o -o ${sinExtension}.out -no-pie 2>&1) #Mando los errores del gcc al standard output asi los atrapada la variable outputCompilado
+outputCompilado=$(gcc ${sinExtension}.o -o ${sinExtension}.out -no-pie 2>&1 | grep -v "the \`gets' function is dangerous and should not be used.") #Mando los errores del gcc al standard output asi los atrapada la variable outputCompilado. El grep me grepea el error de la funcion gets asi no molesta, debido a que lo vamos a usar siempre. Esta estructura se podia generalizar con un array de errores que queremos ignorar o simplemente hacer or, or, or, etc
+echo ${outputCompilado}
+
 
 ./${sinExtension}.out #Esta linea ejecuta el binario
