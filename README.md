@@ -4,6 +4,7 @@ Mini mini Shell script que lo podes correr 1 sola vez y logra:
 
 - Compilar tu codigo assembly a objeto (usando [nasm](https://es.wikipedia.org/wiki/Netwide_Assembler))
 - Compilarlo a un ejecutable (usando [gcc](https://gcc.gnu.org/))
+- Te ignora el error del gets
 - Ejecutarlo
 
 ## Que necesito?
@@ -93,4 +94,4 @@ Muy facil! Una vez copies el archivo en el directorio con tus programas simpleme
 Cosas que quedan por hacer
 - [ ] Tener flags para que el programa sea silencioso
 - [ ] Tal vez le vamos a tener que pasar argumentos a los archivos, se puede usar una flag o chequer si $2,$3, etc son usados y pasarselo al programa assembly
-- [ ] "Chupar" la advertencia del gets y que el resto de la salida del gcc vaya a pantalla
+- [X] "Chupar" la advertencia del gets y que el resto de la salida del gcc vaya a pantalla

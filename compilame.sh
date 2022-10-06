@@ -1,5 +1,5 @@
 #!/bin/sh
-#Compilame version 1.0
+#Compilame version 2.0
 
 if [ -z "$1" ]
 then
@@ -36,6 +36,17 @@ sinExtension=${1%.*} #Creo una variable del archivo a compilar sin la extension 
 
 echo "Compilo de codigo objeto a binario"
 echo ""
-gcc ${sinExtension}.o -o ${sinExtension}.out -no-pie
+
+# Lo que tiene de malo este metodo es que solo funciona con un error. Se podria expandir para mucho errores "ignorables"
+errorGets="the \`gets' function is dangerous and should not be used."
+
+outputCompilado=$(gcc ${sinExtension}.o -o ${sinExtension}.out  2>&1 -no-pie)  #Mando los errores del gcc al standard output asi los atrapada la variable outputCompilado.
+
+
+# Si alguien sabe una manera mas elegante de hacer esto, esta mas que bienvenido
+errorGetsOutput=$(echo -e "$outputCompilado" | grep -B 1 "$errorGets") #Esta linea me toma el mensaje de error del gets y la linea anterior
+outputParseado=$(echo -e "$outputCompilado" | grep -v "$errorGetsOutput") #Esta linea me quita lo que saque en la linea anterior
+
+echo -e "$outputParseado" #Esta linea muestra todos los otros errores que no parseamos antes (llamese, errores no relacionados al gets)
 
 ./${sinExtension}.out #Esta linea ejecuta el binario
