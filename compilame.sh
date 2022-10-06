@@ -37,9 +37,9 @@ sinExtension=${1%.*} #Creo una variable del archivo a compilar sin la extension 
 echo "Compilo de codigo objeto a binario"
 echo ""
 
+# Lo que tiene de malo este metodo es que solo funciona con un error. Se podria expandir para mucho errores "ignorables"
 errorGets="the \`gets' function is dangerous and should not be used."
 
-#Esta estructura se podia generalizar con un array de errores que queremos ignorar o simplemente hacer or, or, or, etc
 outputCompilado=$(gcc ${sinExtension}.o -o ${sinExtension}.out  2>&1 -no-pie)  #Mando los errores del gcc al standard output asi los atrapada la variable outputCompilado.
 
 
