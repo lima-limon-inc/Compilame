@@ -1,6 +1,7 @@
 #!/bin/sh
 #Compilame version 2.1
-debug=0 #Si debug = 0, entonces no corremos los comandos para debugeo. Si es igual a 1, si
+debugeo=0 #Si debug = 0, entonces no corremos los comandos para debugeo. Si es igual a 1, si
+opciones=":dh"
 
 Help () {
 
@@ -56,9 +57,16 @@ fi
 
 echo "Compilo el archivo asembly a objeto"
 echo ""
-nasm "${1}" -f elf64 #Comando de compilacion de assembly a codigo objeto via nasm
 
 sinExtension="${1%.*}" #Creo una variable del archivo a compilar sin la extension para facilitar los comandos que le siguen
+
+if [ "$debugeo" -eq 0 ]
+then
+	nasm -f elf64 -o "${sinExtension}".o "${sinExtension}".asm
+else
+	nasm -g -F dwarf -f elf64 -o "${sinExtension}".o "${sinExtension}".asm
+fi
+
 
 echo "Compilo de codigo objeto a binario"
 echo ""
@@ -66,7 +74,12 @@ echo ""
 # Lo que tiene de malo este metodo es que solo funciona con un error. Se podria expandir para mucho errores "ignorables"
 errorGets="the \`gets' function is dangerous and should not be used."
 
-outputCompilado=$(gcc "${sinExtension}".o -o "${sinExtension}".out  2>&1 -no-pie)  #Mando los errores del gcc al standard output asi los atrapada la variable outputCompilado.
+if [ "$debugeo" -eq 0 ]
+then
+	outputCompilado=$(gcc "${sinExtension}".o -o "${sinExtension}".out  2>&1 -no-pie)  #Mando los errores del gcc al standard output asi los atrapada la variable outputCompilado.
+else
+	outputCompilado=$(gcc -g  "${sinExtension}".o -o "${sinExtension}".out  2>&1 -no-pie)  #Mando los errores del gcc al standard output asi los atrapada la variable outputCompilado. Aca le paso la flag -g para que genere info de debugeo
+fi
 
 
 # Si alguien sabe una manera mas elegante de hacer esto, esta mas que bienvenido
@@ -75,4 +88,9 @@ outputParseado=$(echo -e "$outputCompilado" | grep -v "$errorGetsOutput") #Esta 
 
 echo -e "$outputParseado" #Esta linea muestra todos los otros errores que no parseamos antes (llamese, errores no relacionados al gets)
 
-./"${sinExtension}".out #Esta linea ejecuta el binario
+if [ "$debugeo" -eq 0 ]
+then
+	./"${sinExtension}".out #Esta linea ejecuta el binario
+else
+	gdb "${sinExtension}".out #Esta linea ejecuta el binario
+fi
