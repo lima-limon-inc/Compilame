@@ -1,4 +1,9 @@
 # Compilame
+**ADVERTENCIA**: Esta es una rama **EXPERIMENTAL**. Debido a un error del compilador NASM, uno no puede debugear correctamente con el binario que esta los repositorios de las distribuciones. Hay un parche que en teoria lo arregla, pero no es oficial **DESCARGAR A RIESGO PROPIO**. Hay un build pre compilado para Debian y derivados. El resto de las distribuciones tienen que compilarlo manualmente
+
+Link a la pagina de releases del fix: https://github.com/iglosiggio/nasm/releases
+(El parche fue hecho por un estudiante de Exactas [CREO]; grande Igna!)
+
 ## Que hace?
 Mini mini Shell script que lo podes correr 1 sola vez y logra:
 
@@ -11,6 +16,7 @@ Mini mini Shell script que lo podes correr 1 sola vez y logra:
 
 - nasm
 - gcc
+- gdb (si queres debugear usandolo)
 
 ## Como descargarlo?
 Recomiendo tener algun directorio llamado "Scripts" en el directorio home (el directorio donde "arranca" el shell, tambien abreviado como "~"). Para el resto de la guia voy a usar la direccion `~/Scripts` como ejemplo. Si te guardas el archivo en algun otro lado reemplaza

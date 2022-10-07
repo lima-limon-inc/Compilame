@@ -1,5 +1,5 @@
 #!/bin/sh
-#Compilame version 2.1
+#Compilame version 3.0
 debugeo=0 #Si debug = 0, entonces no corremos los comandos para debugeo. Si es igual a 1, si
 opciones=":dh"
 
