@@ -1,4 +1,7 @@
 # Compilame
+
+Si te interesaria debugear tu codigo assembly podes ver la rama de "flags" (Cuidado: rama experimental)
+
 ## Que hace?
 Mini mini Shell script que lo podes correr 1 sola vez y logra:
 
