@@ -48,7 +48,7 @@ fi
 # Si el usuario pidio generar un template, entonces lo chequeo antes de ver si al archivo existe
 if [ "$template" -eq 1 ] 
 then
-	echo '''#Template generado por compilame.sh
+	echo ''';Template generado por compilame.sh
 
 global main
 ; Imports de funciones de C
