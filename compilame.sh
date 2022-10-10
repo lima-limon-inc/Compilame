@@ -37,9 +37,6 @@ Ejemplo: compilame.sh hola_mundo.asm
 	exit 2 #Paso 2 como error porque el usuario no paso los archivos necesarios
 fi
 
-
-
-
 if [ ".asm" != $(echo -n $1 | tail -c 4) ] && [ ".s" != $(echo -n $1 | tail -c 2) ]
 then
 	echo '''
@@ -54,11 +51,11 @@ if [ "$template" -eq 1 ]
 then
 	echo ''';Template generado por compilame.sh
 global main
-; Imports de funciones de C
-;extern puts
-;extern gets
-;extern printf
-;extern sscanf
+; Imports de funciones de C (por defecto se importan todas, comentar con ";" para excluirlas)
+extern puts
+extern gets
+extern printf
+extern sscanf
 
 section 	.data ;Seccion con valores pre establecidos
 
@@ -89,7 +86,7 @@ if [ "$debugeo" -eq 0 ]
 then
 	nasm -f elf64 -o "${sinExtension}".o "${1}"
 else
-	nasm -g -F dwarf -f elf64 -o "${sinExtension}".o "${sinExtension}".asm
+	nasm -g -F dwarf -f elf64 -o "${sinExtension}".o "${1}"
 fi
 
 
