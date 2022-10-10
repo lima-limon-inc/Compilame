@@ -1,5 +1,4 @@
 # Compilame
-
 Si te interesaria debugear tu codigo assembly podes ver la rama de "flags" (Cuidado: rama experimental)
 
 ## Que hace?
@@ -14,6 +13,7 @@ Mini mini Shell script que lo podes correr 1 sola vez y logra:
 
 - nasm
 - gcc
+- gdb (si queres debugear usandolo)
 
 ## Como descargarlo?
 Recomiendo tener algun directorio llamado "Scripts" en el directorio home (el directorio donde "arranca" el shell, tambien abreviado como "~"). Para el resto de la guia voy a usar la direccion `~/Scripts` como ejemplo. Si te guardas el archivo en algun otro lado reemplaza

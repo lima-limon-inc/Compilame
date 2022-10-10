@@ -1,5 +1,32 @@
 #!/bin/sh
-#Compilame version 2.1
+#Compilame version 2.5
+template=0 #Si template = 0, entonces ignore el template
+opciones=":ht"
+
+Help () {
+
+echo "
+Compilame. Programa 'wrapper' de los compiladores NASM y GCC.
+
+Formato de los comandos:
+compilame.sh -opciones archivo.asm
+
+Opciones disponibles: (En la version actual no se pueden combinar y usar mas de una)
+-h: Help, Ayuda
+-t: TEMPLATE: Genera un archivo assembly modelo (global main, las 3 secciones, importa las funciones de C, etc)
+"
+	exit 0 #Salgo deel programa porque el usuario pidio ver la ayuda
+}
+
+while getopts $opciones opt
+do
+	case "${opt}" in
+	t) template=1;;
+	h | help ) Help ;;
+	\?) echo "Opcion desconocida $OPTARG"; exit 1 ;;
+	esac
+	shift
+done
 
 if [ -z "$1" ]
 then
@@ -10,6 +37,37 @@ Ejemplo: compilame.sh hola_mundo.asm
 	exit 2 #Paso 2 como error porque el usuario no paso los archivos necesarios
 fi
 
+if [ ".asm" != $(echo -n $1 | tail -c 4) ] && [ ".s" != $(echo -n $1 | tail -c 2) ]
+then
+	echo '''
+Tenes que pasarme un archivo ".asm" o ".s"
+	'''
+	exit 2 #Paso 2 como error porque el usuario no paso un archivo existente
+fi
+
+# Si el usuario pidio generar un template, entonces lo chequeo antes de ver si al archivo existe
+if [ "$template" -eq 1 ] 
+then
+	echo '''#Template generado por compilame.sh
+
+global main
+; Imports de funciones de C
+;extern puts
+;extern gets
+;extern printf
+;extern sscanf
+
+section 	.data ;Seccion con valores pre establecidos
+
+section 	.bss ;Seccion sin valor por defecto
+
+section 	.text
+main:
+
+ret
+''' >> "${1}"
+	exit 1 #El programa finaliza, es un archivo assembly vacio
+fi
 
 if [ ! -f "$1" ]
 then
@@ -20,19 +78,11 @@ ${1} no existe
 fi
 
 
-if [ ".asm" != $(echo -n $1 | tail -c 4) ] && [ ".s" != $(echo -n $1 | tail -c 2) ]
-then
-	echo '''
-Tenes que pasarme un archivo ".asm" o ".s"
-	'''
-	exit 2 #Paso 2 como error porque el usuario no paso un archivo existente
-fi
+sinExtension="${1%.*}" #Creo una variable del archivo a compilar sin la extension para facilitar los comandos que le siguen
 
 echo "Compilo el archivo asembly a objeto"
 echo ""
-nasm "${1}" -f elf64 #Comando de compilacion de assembly a codigo objeto via nasm
-
-sinExtension="${1%.*}" #Creo una variable del archivo a compilar sin la extension para facilitar los comandos que le siguen
+nasm -f elf64 -o "${sinExtension}".o "${1}"
 
 echo "Compilo de codigo objeto a binario"
 echo ""
