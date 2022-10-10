@@ -1,19 +1,16 @@
-#!/bin/sh
-#Compilame version 2.5
-template=0 #Si template = 0, entonces ignore el template
-opciones=":ht"
+ompilame version 3.0
+debugeo=0 #Si debug = 0, entonces no corremos los comandos para debugeo. Si es igual a 1, si
+opciones=":dh"
 
 Help () {
 
 echo "
 Compilame. Programa 'wrapper' de los compiladores NASM y GCC.
-
 Formato de los comandos:
 compilame.sh -opciones archivo.asm
-
 Opciones disponibles: (En la version actual no se pueden combinar y usar mas de una)
 -h: Help, Ayuda
--t: TEMPLATE: Genera un archivo assembly modelo (global main, las 3 secciones, importa las funciones de C, etc)
+-d: Debugear: Corre los comandos para poder debugear el codigo maquina con algun debuger (el gdb por ejemplo). ADVERTENCIA: ACTUALMENTE NO SE PUEDE DEBUGEAR. Si uno QUISIERA debugear tiene que recompilar el el compilador NASM. APARENTEMENTE, esta build del patcheada del NASM funciona . Tiene una version precompilada para distribuciones Debian o sino el codigo fuente para compilar manualmente. (DESCARGAR A RIESGO PROPIO): https://github.com/iglosiggio/nasm/releases
 "
 	exit 0 #Salgo deel programa porque el usuario pidio ver la ayuda
 }
@@ -21,7 +18,7 @@ Opciones disponibles: (En la version actual no se pueden combinar y usar mas de 
 while getopts $opciones opt
 do
 	case "${opt}" in
-	t) template=1;;
+	d) debugeo=1 ;;
 	h | help ) Help ;;
 	\?) echo "Opcion desconocida $OPTARG"; exit 1 ;;
 	esac
@@ -37,37 +34,6 @@ Ejemplo: compilame.sh hola_mundo.asm
 	exit 2 #Paso 2 como error porque el usuario no paso los archivos necesarios
 fi
 
-if [ ".asm" != $(echo -n $1 | tail -c 4) ] && [ ".s" != $(echo -n $1 | tail -c 2) ]
-then
-	echo '''
-Tenes que pasarme un archivo ".asm" o ".s"
-	'''
-	exit 2 #Paso 2 como error porque el usuario no paso un archivo existente
-fi
-
-# Si el usuario pidio generar un template, entonces lo chequeo antes de ver si al archivo existe
-if [ "$template" -eq 1 ] 
-then
-	echo ''';Template generado por compilame.sh
-
-global main
-; Imports de funciones de C
-;extern puts
-;extern gets
-;extern printf
-;extern sscanf
-
-section 	.data ;Seccion con valores pre establecidos
-
-section 	.bss ;Seccion sin valor por defecto
-
-section 	.text
-main:
-
-ret
-''' >> "${1}"
-	exit 1 #El programa finaliza, es un archivo assembly vacio
-fi
 
 if [ ! -f "$1" ]
 then
@@ -78,11 +44,26 @@ ${1} no existe
 fi
 
 
-sinExtension="${1%.*}" #Creo una variable del archivo a compilar sin la extension para facilitar los comandos que le siguen
+if [ ".asm" != $(echo -n $1 | tail -c 4) ] && [ ".s" != $(echo -n $1 | tail -c 2) ]
+then
+	echo '''
+Tenes que pasarme un archivo ".asm" o ".s"
+	'''
+	exit 2 #Paso 2 como error porque el usuario no paso un archivo existente
+fi
 
 echo "Compilo el archivo asembly a objeto"
 echo ""
-nasm -f elf64 -o "${sinExtension}".o "${1}"
+
+sinExtension="${1%.*}" #Creo una variable del archivo a compilar sin la extension para facilitar los comandos que le siguen
+
+if [ "$debugeo" -eq 0 ]
+then
+	nasm -f elf64 -o "${sinExtension}".o "${sinExtension}".asm
+else
+	nasm -g -F dwarf -f elf64 -o "${sinExtension}".o "${sinExtension}".asm
+fi
+
 
 echo "Compilo de codigo objeto a binario"
 echo ""
@@ -90,7 +71,12 @@ echo ""
 # Lo que tiene de malo este metodo es que solo funciona con un error. Se podria expandir para mucho errores "ignorables"
 errorGets="the \`gets' function is dangerous and should not be used."
 
-outputCompilado=$(gcc "${sinExtension}".o -o "${sinExtension}".out  2>&1 -no-pie)  #Mando los errores del gcc al standard output asi los atrapada la variable outputCompilado.
+if [ "$debugeo" -eq 0 ]
+then
+	outputCompilado=$(gcc "${sinExtension}".o -o "${sinExtension}".out  2>&1 -no-pie)  #Mando los errores del gcc al standard output asi los atrapada la variable outputCompilado.
+else
+	outputCompilado=$(gcc -g  "${sinExtension}".o -o "${sinExtension}".out  2>&1 -no-pie)  #Mando los errores del gcc al standard output asi los atrapada la variable outputCompilado. Aca le paso la flag -g para que genere info de debugeo
+fi
 
 
 # Si alguien sabe una manera mas elegante de hacer esto, esta mas que bienvenido
@@ -99,4 +85,110 @@ outputParseado=$(echo -e "$outputCompilado" | grep -v "$errorGetsOutput") #Esta 
 
 echo -e "$outputParseado" #Esta linea muestra todos los otros errores que no parseamos antes (llamese, errores no relacionados al gets)
 
-./"${sinExtension}".out #Esta linea ejecuta el binario
+if [ "$debugeo" -eq 0 ]
+then
+	./"${sinExtension}".out #Esta linea ejecuta el binario
+else
+	gdb "${sinExtension}".out #Esta linea ejecuta el binario
+fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
