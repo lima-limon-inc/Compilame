@@ -1,4 +1,4 @@
-#Compilame version 3.0
+#Compilame version 3.1
 debugeo=0 #Si debug = 0, entonces no corremos los comandos para debugeo. Si es igual a 1, si
 template=0 #Si template = 0, entonces ignore el template
 opciones=":dht"
@@ -56,6 +56,12 @@ extern puts
 extern gets
 extern printf
 extern sscanf
+extern fopen
+extern fwrite
+extern fread
+extern fclose
+
+
 
 section 	.data ;Seccion con valores pre establecidos
 
