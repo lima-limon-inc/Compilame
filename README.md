@@ -1,7 +1,8 @@
 # Compilame
 ADVERTENCIA: La flag "-d" es una funcion EXPERIMENTAL. Debido a un error del compilador NASM, uno no puede debugear correctamente con el binario que esta los repositorios de las distribuciones. Hay un parche que en teoria lo arregla, pero no es oficial DESCARGAR A RIESGO PROPIO. Hay un build pre compilado para Debian y derivados. El resto de las distribuciones tienen que compilarlo manualmente
 
-Link a la pagina de releases del fix: https://github.com/iglosiggio/nasm/releases (El parche fue hecho por un estudiante de Exactas [CREO]; grande Igna!)
+Link a la pagina de releases del fix: https://github.com/iglosiggio/nasm/releases (El parche fue hecho por un estudiante de Exactas; grande Igna!)
+Si queres instalar la version patcheada del NASM anda al final de este archivo
 
 ## Que hace?
 Mini mini Shell script que lo podes correr 1 sola vez y logra:
@@ -94,6 +95,49 @@ source ~/.bashrc
 
 ## Como usarlo?
 Muy facil! Una vez copies el archivo en el directorio con tus programas simplemente corre `./compilame.sh archivo.asm` (si hicite el Paso 4 podes usar directamente `compilame.sh archivo.asm` y no hace falta que copies el archivo)
+
+### Flag  (-t) para crear un archivo en blanco
+`./compilame.sh -t archivoSinCrear.asm`
+Crea un archivo "modelo" de assembly (todos los exports, las secciones text, data, etc)
+
+### Flag (-h) ayuda
+`./compilame.sh -h archivo.asm`
+Imprime ayuda sobre el script
+
+### Flag (-d) para debugeo
+`./compilame.sh -d archivo.asm`
+Compila el archivo y lo ejecuta por gdb por defecto
+Una vez dentro de gdb escribi `start`, y despues `layout regs` (tambien podes escribir `layout next` hasta llegar a una vista que te guste)
+
+#### Funciones basicas de GDB
+- `next`: Va a la siguiente linea (muy recomedado)
+- `step`: Salta a la funcion que llamas (ejemplo, si llamas alguna etiqueta con `call`, el gdb VA a esa etiqueta)
+
+Para mas informacion sobre GDB recomiendo ver este [video](https://youtu.be/svG6OPyKsrw). Es probable que algunas funciones no funcionen, como print.
+
+## Como instalar la version patcheada de NASM?
+### Distros derivadas de Debian (Ubuntu, Mint, PopOS, etc)
+1. Anda a la pagina de releases del patch: https://github.com/iglosiggio/nasm/releases
+2. Bajate la version que termina `.deb`, en la fecha actual es `nasm_2.15.05-2_amd64.deb`.
+3. Con la terminal anda a la carpeta donde tenes el archivo descargado (seguramente Descargas/Downloads)
+4. Corre el siguiente comando: `sudo dpkg -i nasm_2.15.05-2_amd64.deb`. Esto deberia instalar el parche a tu sistema de archivos, haciendo posible que corras el archivo desde cualquier lado
+5. Si **NO** funciona con lo anterior, podes probar desinstalando el nasm original y volviendo a correr el comando del punto 4.
+
+### Resto de las distribuciones
+1. Anda a la pagina de releases del patch: https://github.com/iglosiggio/nasm/releases
+2. Bajate la version que termina `.tar.xz` (o "Source Code"), en la fecha actual es `nasm-nasm-2.15.05-2.tar.gz`
+3. Recomiendo crear algun directorio llamado "Codigo Fuente" en algun lado para tener todo bien ordenado
+4. Abri la tarball, con el siguiente comando: `tar xfv nasm-nasm-2.15.05-2.tar.gz`
+5. Entra a la nueva carpeta `cd nasm-nasm-2.15.05-2`
+6. Corre los siguientes comandos uno a uno:
+	1. `./autogen.sh`
+	2. `./configure --prefix=/usr/local`
+	3. `make`
+	4. `make install`
+Si todo salio bien, podes usar la version patcheada de nasm en todos lados. Para chequear:
+`nasm -version` deberia decir `NASM version 2.16rc0 compiled [FECHA]`.
+
+Si `make install` no funciona siempre podes hacer un link simbolico (`ejemplo: ln -s camino/al/archivo/Codigo_Fuente/nasm carpeta/con/archivos/assembly`) al ejecutable `nasm` en las carpeta donde compiles los programas assembly y corres: `./nasm archivo.asm`.
 
 ## TODO
 Cosas que quedan por hacer
