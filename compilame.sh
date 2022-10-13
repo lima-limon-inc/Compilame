@@ -1,3 +1,4 @@
+#!/bin/sh
 #Compilame version 3.2
 debugeo=0 #Si debug = 0, entonces no corremos los comandos para debugeo. Si es igual a 1, si
 template=0 #Si template = 0, entonces ignore el template
