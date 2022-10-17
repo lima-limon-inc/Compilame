@@ -141,6 +141,7 @@ Si `make install` no funciona siempre podes hacer un link simbolico (`ejemplo: l
 
 ## TODO
 Cosas que quedan por hacer
+- [ ] Hacer que el programa sepa diferenciar si estamos en ARM o Intel
 - [ ] Tener flags para que el programa sea silencioso
 - [ ] Tal vez le vamos a tener que pasar argumentos a los archivos, se puede usar una flag o chequer si $2,$3, etc son usados y pasarselo al programa assembly
 - [X] "Chupar" la advertencia del gets y que el resto de la salida del gcc vaya a pantalla
