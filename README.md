@@ -35,9 +35,13 @@ Anda al directorio de scripts. Si seguiste la guia podes ejecutar el siguiente c
 ```
 cd ~/Scripts
 ```
-Una vez ahi dentro ejecuta el siguiete comando:
+Una vez ahi dentro ejecuta alguno de los siguientes comandos:
 ```
 git clone https://github.com/lima-limon-inc/Compilame.git
+```
+O si tenes un par de llaves SSH con github:
+```
+git clone git@github.com:lima-limon-inc/Compilame.git
 ```
 Eso deberia crear un directorio TesterAlgo2 en tu directorio Scripts/.
 Una vez hecho eso, entra al directorio TesterAlgo2
